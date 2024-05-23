@@ -1,0 +1,25 @@
+# editors
+.idea
+.vscode
+
+# dependencies
+node_modules
+
+# production
+dist
+build
+
+# database
+database/files
+
+# misc
+.env
+.env.test
+
+# cache
+.turbo
+coverage
+
+# gitconfig
+.gitconfig
+.gitattributes

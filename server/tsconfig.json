@@ -1,0 +1,18 @@
+{
+  "extends": "../tsconfig.json",
+  "include": ["src", "database", "typings"],
+  "compilerOptions": {
+    "target": "ESNext",
+    "module": "ESNext",
+    "lib": ["ESNext", "DOM", "DOM.Iterable"],
+    "moduleResolution": "Bundler",
+    "skipLibCheck": true,
+    "noEmit": true,
+    "outDir": "./dist",
+    "baseUrl": ".",
+    "paths": {
+      "#/*": ["./src/*"],
+      "@/*": ["../shared/src/*"]
+    }
+  }
+}

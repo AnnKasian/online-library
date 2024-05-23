@@ -1,0 +1,78 @@
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["fullTextSearch"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DB_URL")
+}
+
+model User {
+  id          Int      @id @default(autoincrement())
+  fullName    String   @map("full_name")
+  dateOfBirth DateTime @map("date_of_birth")
+  email       String   @unique
+  password    String
+  role        Role     @default(USER)
+  copies      Copy[]
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  @@map("users")
+}
+
+model Book {
+  id          Int      @id @default(autoincrement())
+  title       String
+  authorId    Int      @map("author_id")
+  genreId     Int      @map("genre_id")
+  description String?
+  copies      Copy[]
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  author Author @relation(fields: [authorId], references: [id])
+  genre  Genre  @relation(fields: [genreId], references: [id])
+
+  @@map("books")
+}
+
+model Copy {
+  id         Int      @id @default(autoincrement())
+  userId     Int?     @map("user_id")
+  bookId     Int      @map("book_id")
+  returnedAt DateTime @default(now()) @map("returned_at")
+  createdAt  DateTime @default(now()) @map("created_at")
+  updatedAt  DateTime @updatedAt @map("updated_at")
+
+  user User? @relation(fields: [userId], references: [id])
+  book Book  @relation(fields: [bookId], references: [id])
+
+  @@map("copies")
+}
+
+model Author {
+  id        Int      @id @default(autoincrement())
+  fullName  String   @unique @map("full_name")
+  books     Book[]
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("authors")
+}
+
+model Genre {
+  id        Int      @id @default(autoincrement())
+  type      String   @unique
+  books     Book[]
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("genres")
+}
+
+enum Role {
+  USER
+  ADMIN
+}
