@@ -9,13 +9,10 @@
     "lint": "npm run lint:type && npm run lint:js"
   },
   "dependencies": {
-    "@emotion/react": "^11.11.4",
-    "@emotion/styled": "^11.11.5",
     "@hookform/resolvers": "^3.3.4",
-    "@mui/material": "^5.15.16",
-    "@mui/x-date-pickers": "^7.4.0",
     "@reduxjs/toolkit": "^2.2.3",
     "axios": "^1.6.8",
+    "clsx": "^2.1.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-hook-form": "^7.51.3",

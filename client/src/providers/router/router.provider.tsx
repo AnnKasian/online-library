@@ -1,8 +1,8 @@
 import { Navigate, createBrowserRouter } from 'react-router-dom';
 
 import { App } from '#/app';
-import { Root } from '#/components/pages';
 import { Route } from '#/libs/enums';
+import { Root } from '#/pages';
 
 const createAppRouter = () =>
   createBrowserRouter([

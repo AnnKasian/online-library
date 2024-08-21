@@ -1,16 +1,9 @@
-import { TextField } from '@mui/material';
-import {
-  Control,
-  FieldErrors,
-  FieldValues,
-  useController,
-} from 'react-hook-form';
+import { Control, FieldValues, useController } from 'react-hook-form';
 
 import { FieldFilteredPath } from '#/libs/types';
 
 type Properties<T extends FieldValues> = {
   control: Control<T>;
-  errors: FieldErrors<T>;
   name: FieldFilteredPath<T, string | undefined>;
   label?: string;
   type?: 'text' | 'email' | 'password';
@@ -21,7 +14,6 @@ type Properties<T extends FieldValues> = {
 
 const InputText = <T extends FieldValues>({
   control,
-  errors,
   name,
   label,
   type = 'text',
@@ -31,7 +23,9 @@ const InputText = <T extends FieldValues>({
 }: Properties<T>): JSX.Element => {
   const {
     field: { onChange, value, ...fieldData },
+    fieldState: { error },
   } = useController({ control, name });
+  const message = error?.message;
 
   const handleChange = (
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
@@ -41,18 +35,19 @@ const InputText = <T extends FieldValues>({
   };
 
   return (
-    <TextField
-      label={label}
-      placeholder={placeholder}
-      type={type}
-      required={required}
-      error={Boolean(errors[name])}
-      helperText={errors[name]?.message?.toString() ?? (!hideDetails && ' ')}
-      value={value ?? ''}
-      onChange={handleChange}
-      fullWidth
-      {...fieldData}
-    />
+    <label>
+      {label}
+      <input
+        placeholder={placeholder}
+        type={type}
+        required={required}
+        value={value ?? ''}
+        onChange={handleChange}
+        {...fieldData}
+      />
+      {!hideDetails && message}
+      {/* TODO: Show error */}
+    </label>
   );
 };
 
