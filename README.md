@@ -1,8 +1,4 @@
-# Library
-
-## Global
-
-### How to Run
+# Online Library
 
 ## Client
 
