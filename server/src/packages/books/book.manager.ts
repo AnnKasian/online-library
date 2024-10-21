@@ -1,15 +1,14 @@
-import { BookItemBuilder } from './book-item.builder';
-import { BookItem, BookRaw } from './libs/types';
+import { BookBuilder, BookRaw } from './libs/types';
 
-class BooksManager {
-  constructor(private builder: BookItemBuilder) {}
+class BooksManager<Type> {
+  constructor(private builder: BookBuilder<Type>) {}
 
   initialize(book: {
     title: string;
     author: string;
     genre: string;
     description?: string;
-  }): BookItem {
+  }): Type {
     this.builder.addInfo(book);
 
     return this.builder.getResult();
@@ -23,7 +22,7 @@ class BooksManager {
     description,
     createdAt,
     updatedAt,
-  }: BookRaw): BookItem {
+  }: BookRaw): Type {
     this.builder.addInfo({
       title,
       author: author.fullName,

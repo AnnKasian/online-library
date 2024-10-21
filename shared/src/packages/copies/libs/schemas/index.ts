@@ -1,2 +1,2 @@
 export { copyCreateDtoSchema } from './copy-create-dto.schema';
-export { copyUpdateDtoSchema } from './copy-update-dto.schema';
+export { copyReserveDtoSchema } from './copy-reserve-dto.schema';

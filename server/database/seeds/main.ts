@@ -2,13 +2,18 @@ import { Prisma, PrismaClient } from '@prisma/client';
 
 import { UserRole } from '@/packages/user';
 
+import { EncryptService } from '#/services/encrypt';
+
 const prisma = new PrismaClient();
+const rounds = Number(process.env['ENCRYPT_ROUNDS']);
+const salt = await EncryptService.generateSalt(rounds);
+const password = await EncryptService.generateHash('12345678', salt);
 
 const admin: Prisma.UserCreateInput = {
   fullName: 'Admin',
   dateOfBirth: new Date('2000/04/05'),
   email: 'admin@gmail.com',
-  password: '12345678',
+  password: password,
   role: UserRole.ADMIN,
   createdAt: new Date(),
   updatedAt: new Date(),
@@ -18,7 +23,6 @@ void prisma.user
   .upsert({
     where: {
       email: admin.email,
-      password: admin.password,
     },
     create: {
       fullName: admin.fullName,

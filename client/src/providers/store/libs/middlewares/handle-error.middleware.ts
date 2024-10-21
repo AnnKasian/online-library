@@ -1,10 +1,13 @@
-import { Middleware, isRejected } from '@reduxjs/toolkit';
+import { Middleware, MiddlewareAPI, isRejected } from '@reduxjs/toolkit';
 
-import { ExceptionMessage } from '#/libs/enums';
+import { ExceptionMessage, HttpCode } from '#/libs/enums';
 import { NotificationsService } from '#/services/notification';
+import { usersActions } from '#/slices/users';
+
+import { AppDispatch } from '../types';
 
 const handleErrorMiddleware: () => Middleware = () => {
-  return () => {
+  return ({ dispatch }: MiddlewareAPI<AppDispatch>) => {
     return (next) => {
       return (action: unknown) => {
         if (!action || typeof action !== 'object' || !('error' in action)) {
@@ -15,6 +18,12 @@ const handleErrorMiddleware: () => Middleware = () => {
 
         if (isRejected(action)) {
           errorMessage = action.error.message;
+
+          if (errorMessage === HttpCode.UNAUTHORIZED.toString()) {
+            void dispatch(usersActions.signOut());
+
+            return next(action);
+          }
 
           if (!errorMessage) {
             errorMessage = ExceptionMessage.UNKNOWN_EXCEPTION;

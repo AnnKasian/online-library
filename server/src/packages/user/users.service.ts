@@ -2,12 +2,17 @@ import { HttpCode } from '#/libs/enums';
 import { HttpException } from '#/libs/exceptions';
 
 import { UserExceptionMessage } from './libs/enums';
-import { UserFilters, UserItem, UserSignUpDto } from './libs/types';
+import {
+  UserFilters,
+  UserItem,
+  UserSignUpDto,
+  UsersGenericService,
+} from './libs/types';
 import { UserItemBuilder } from './user-item.builder';
 import { UsersManager } from './user.manager';
 import { UsersRepository } from './users.repository';
 
-class UsersService {
+class UsersService implements UsersGenericService {
   private readonly usersManager: UsersManager<UserItem>;
 
   constructor(private readonly usersRepository: UsersRepository) {

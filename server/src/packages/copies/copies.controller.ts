@@ -4,19 +4,19 @@ import { HttpCode } from '#/libs/enums';
 import { handleAsync, handleRole, validateSchemas } from '#/libs/middlewares';
 import { idDtoSchema } from '#/libs/schemas';
 import { IdDto, ItemController } from '#/libs/types';
+import { BookDto, BooksService } from '#/packages/books';
+import { UserDto, UserRole, UsersService } from '#/packages/user';
 
-import { BookItem, BooksService } from '../books';
-import { UserItem, UserRole, UsersService } from '../user';
 import { CopiesService } from './copies.service';
 import { CopyApiRoute, CopyStatus } from './libs/enums';
-import { copyCreateDtoSchema, copyUpdateDtoSchema } from './libs/schemas';
+import { copyCreateDtoSchema, copyReserveDtoSchema } from './libs/schemas';
 import {
   CopiesExtendePageDto,
   CopiesPageDto,
   CopyCreateDto,
   CopyDto,
   CopyExtendedDto,
-  CopyUpdateDto,
+  CopyReserveDto,
 } from './libs/types';
 
 class CopiesController extends ItemController {
@@ -47,7 +47,10 @@ class CopiesController extends ItemController {
       }),
       handleAsync(async (request, response) => {
         const id = request.params.id;
-        const copies = await this.copiesService.getAll({ bookId: id });
+        const copies = await this.copiesService.getAll({
+          bookId: id,
+          status: CopyStatus.FREE,
+        });
 
         response.status(HttpCode.OK).json({ copies });
       }),
@@ -85,7 +88,7 @@ class CopiesController extends ItemController {
   }
 
   post(): void {
-    this.copiesRouter.post<string, {}, {}, CopyCreateDto>(
+    this.copiesRouter.post<string, {}, CopyCreateDto, CopyCreateDto>(
       CopyApiRoute.CREATE,
       handleRole(UserRole.ADMIN),
       validateSchemas({
@@ -93,18 +96,18 @@ class CopiesController extends ItemController {
       }),
       handleAsync(async (request, response) => {
         const payload = request.body;
-        const copies = await this.copiesService.createAll(payload);
+        await this.copiesService.createAll(payload);
 
-        response.status(HttpCode.CREATED).json(copies);
+        response.status(HttpCode.CREATED).json(payload);
       }),
     );
   }
 
   put(): void {
-    this.copiesRouter.put<string, {}, CopyDto, CopyUpdateDto>(
+    this.copiesRouter.put<string, {}, CopyDto, CopyReserveDto>(
       CopyApiRoute.RESERVE,
       validateSchemas({
-        body: copyUpdateDtoSchema,
+        body: copyReserveDtoSchema,
       }),
       handleAsync(async (request, response) => {
         const userId = request.user.id;
@@ -136,14 +139,16 @@ class CopiesController extends ItemController {
     const users = await this.usersService.getAll(
       copies.map(({ userId }) => userId).filter(Boolean) as number[],
     );
+    const usersSafe = users.map(({ password, ...user }) => user);
+
     const books = await this.booksService.getAll(
       copies.map(({ bookId }) => bookId),
     );
 
     return copies.map(({ userId, bookId, ...copy }, index) => ({
       ...copy,
-      user: users[index] as UserItem,
-      book: books.books[index] as BookItem,
+      user: usersSafe[index] as UserDto,
+      book: books.books[index] as BookDto,
     }));
   }
 }

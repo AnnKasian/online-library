@@ -1,9 +1,11 @@
-import { create, get } from './users.actions';
+import { authenticate, signIn, signOut, signUp } from './users.actions';
 
-const actions = {
-  get,
-  create,
-};
+const usersActions = {
+  signOut,
+  authenticate,
+  signIn,
+  signUp,
+} as const;
 
-export { actions as usersActions };
+export { usersActions };
 export { reducer as usersReducer } from './users.slice';

@@ -3,6 +3,7 @@ import { Router } from 'express';
 import { ApiRoute } from '@/libs/enums';
 
 import { AuthProxy } from './auth.proxy';
+import { UsersGenericService } from './libs/types';
 import { UsersController } from './users.controller';
 import { UsersRepository } from './users.repository';
 import { UsersService } from './users.service';
@@ -13,13 +14,14 @@ class UsersRouter {
   private router: Router;
   private repository: UsersRepository;
   private controller: UsersController;
-  private service: UsersService;
+  private service: UsersGenericService;
 
   constructor() {
     this.router = Router();
 
     this.repository = new UsersRepository();
-    this.service = new AuthProxy(this.repository);
+    const usersService = new UsersService(this.repository);
+    this.service = new AuthProxy(usersService);
     this.controller = new UsersController(this.router, this.service);
   }
 

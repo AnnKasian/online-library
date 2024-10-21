@@ -1,11 +1,15 @@
 import { AxiosError } from 'axios';
 
-import { ExceptionMessage } from '#/libs/enums';
+import { ExceptionMessage, HttpCode } from '#/libs/enums';
 
 const handleError = () => {
   return (error: unknown) => {
     if (error instanceof AxiosError && error.response) {
       const data: unknown = error.response.data;
+
+      if (error.response.status === Number(HttpCode.UNAUTHORIZED)) {
+        throw new Error(HttpCode.UNAUTHORIZED.toString());
+      }
 
       if (
         typeof data === 'object' &&

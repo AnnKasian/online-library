@@ -2,6 +2,7 @@ import { CopyCreateDto } from '@/packages/copies';
 
 import { HttpCode, OrderType } from '#/libs/enums';
 import { HttpException } from '#/libs/exceptions';
+import { addMonths } from '#/libs/helpers';
 
 import { BooksService } from '../books';
 import { CopyItemBuilder } from './copies-item.builder';
@@ -11,7 +12,7 @@ import { CopyExceptionMessage } from './libs/enums';
 import { CopyFilters, CopyItem, CopySearchStrategy } from './libs/types';
 
 class CopiesService {
-  private readonly copiesManager: CopiesManager;
+  private readonly copiesManager: CopiesManager<CopyItem>;
 
   constructor(
     private readonly copiesRepository: CopiesRepository,
@@ -59,9 +60,11 @@ class CopiesService {
     await this.booksService.getByFilter({ id: bookId });
 
     const { id } = await this.copiesStrategy.search(bookId, userId);
+    const returnedAt = addMonths(new Date(), 1);
 
     return this.copiesRepository.update(id, {
       userId,
+      returnedAt,
     });
   }
 

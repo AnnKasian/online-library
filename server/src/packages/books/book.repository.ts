@@ -8,7 +8,7 @@ import { BooksManager } from './book.manager';
 import { BookFilters, BookItem } from './libs/types';
 
 class BooksRepository extends ItemRepository<BookItem> {
-  private readonly booksManager: BooksManager;
+  private readonly booksManager: BooksManager<BookItem>;
   private readonly books: Prisma.BookDelegate;
 
   constructor() {

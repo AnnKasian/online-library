@@ -7,7 +7,7 @@ export type {
   CopyDto,
   CopiesPageDto,
   CopyCreateDto,
-  CopyUpdateDto,
+  CopyReserveDto,
   CopyExtendedDto,
   CopiesExtendePageDto,
 } from '@/packages/copies';

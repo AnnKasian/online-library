@@ -1,5 +1,5 @@
-import { BookDto } from '#/packages/books';
-import { UserDto } from '#/packages/user';
+import { BookDto } from '../../../books';
+import { UserDto } from '../../../user';
 
 type CopyExtendedDto = {
   id: number;

@@ -7,9 +7,13 @@ import {
 } from '@reduxjs/toolkit';
 import { AxiosInstance } from 'axios';
 
+import { BooksService } from '#/services/books';
+import { CopiesService } from '#/services/copies';
 import { NotificationsService } from '#/services/notification';
 import { StorageService } from '#/services/storage';
-import { UsersService } from '#/services/users/users.service';
+import { UsersService } from '#/services/users';
+import { booksReducer } from '#/slices/books';
+import { copiesReducer } from '#/slices/copies';
 import { usersReducer } from '#/slices/users';
 
 import { handleErrorMiddleware } from './libs/middlewares';
@@ -20,6 +24,8 @@ const createAppStore = (client: AxiosInstance) => {
     storageService: StorageService.getInstance(),
     notificationService: NotificationsService.getInstance(),
     usersService: new UsersService(client),
+    booksService: new BooksService(client),
+    copiesService: new CopiesService(client),
   };
 
   return configureStore<
@@ -32,6 +38,8 @@ const createAppStore = (client: AxiosInstance) => {
     devTools: true,
     reducer: {
       users: usersReducer,
+      books: booksReducer,
+      copies: copiesReducer,
     },
     middleware: (getDefaultMiddleware) =>
       getDefaultMiddleware({

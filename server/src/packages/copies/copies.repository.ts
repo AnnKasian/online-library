@@ -9,7 +9,7 @@ import { CopyStatus } from './libs/enums';
 import { CopyFilters, CopyItem, CopyRaw } from './libs/types';
 
 class CopiesRepository extends ItemRepository<CopyItem> {
-  private readonly copiesManager: CopiesManager;
+  private readonly copiesManager: CopiesManager<CopyItem>;
   private readonly copies: Prisma.CopyDelegate;
 
   constructor() {
@@ -77,7 +77,7 @@ class CopiesRepository extends ItemRepository<CopyItem> {
 
   async update(
     id: number,
-    { bookId, userId }: Partial<CopyRaw>,
+    { bookId, userId, returnedAt }: Partial<CopyRaw>,
   ): Promise<CopyItem> {
     const copy = await this.copies.update({
       where: {
@@ -86,6 +86,7 @@ class CopiesRepository extends ItemRepository<CopyItem> {
       data: {
         bookId,
         userId,
+        returnedAt,
       },
     });
 

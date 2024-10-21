@@ -36,10 +36,13 @@ class UserItemBuilder implements UserBuilder<UserItem> {
     email: string;
     password: string;
   }): void {
-    this.user.fullName = fullName;
-    this.user.dateOfBirth = dateOfBirth;
-    this.user.email = email;
-    this.user.password = password;
+    this.user = {
+      ...this.user,
+      fullName,
+      dateOfBirth,
+      email,
+      password,
+    };
   }
 
   addExtra({
@@ -53,10 +56,13 @@ class UserItemBuilder implements UserBuilder<UserItem> {
     createdAt: Date;
     updatedAt: Date;
   }): void {
-    this.user.id = id;
-    this.user.role = role;
-    this.user.createdAt = createdAt;
-    this.user.updatedAt = updatedAt;
+    this.user = {
+      ...this.user,
+      id,
+      role,
+      createdAt,
+      updatedAt,
+    };
   }
 }
 

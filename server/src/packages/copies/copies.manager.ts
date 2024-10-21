@@ -1,14 +1,13 @@
-import { CopyItemBuilder } from './copies-item.builder';
-import { CopyItem, CopyRaw } from './libs/types';
+import { CopyBuilder, CopyRaw } from './libs/types';
 
-class CopiesManager {
-  constructor(private builder: CopyItemBuilder) {}
+class CopiesManager<Type> {
+  constructor(private builder: CopyBuilder<Type>) {}
 
   initialize(copy: {
     bookId: number;
     userId?: number;
     returnedAt: Date;
-  }): CopyItem {
+  }): Type {
     this.builder.addInfo(copy);
 
     return this.builder.getResult();
@@ -21,7 +20,7 @@ class CopiesManager {
     returnedAt,
     createdAt,
     updatedAt,
-  }: CopyRaw): CopyItem {
+  }: CopyRaw): Type {
     this.builder.addInfo({
       bookId: bookId,
       userId: userId ?? undefined,

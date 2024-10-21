@@ -1,10 +1,10 @@
 export type {
   CopyDto,
   CopiesPageDto,
-  CopyUpdateDto,
+  CopyReserveDto,
   CopyCreateDto,
   CopyExtendedDto,
   CopiesExtendePageDto,
 } from './libs/types';
 export { CopyApiRoute } from './libs/enums';
-export { copyCreateDtoSchema, copyUpdateDtoSchema } from './libs/schemas';
+export { copyCreateDtoSchema, copyReserveDtoSchema } from './libs/schemas';

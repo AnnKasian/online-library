@@ -5,13 +5,17 @@ import { handleAsync, validateSchemas } from '#/libs/middlewares';
 
 import { UserApiRoute } from './libs/enums';
 import { userSignInDtoSchema, userSignUpDtoSchema } from './libs/schemas';
-import { UserDto, UserSignInDto, UserSignUpDto } from './libs/types';
-import { UsersService } from './users.service';
+import {
+  UserDto,
+  UserSignInDto,
+  UserSignUpDto,
+  UsersGenericService,
+} from './libs/types';
 
 class UsersController {
   constructor(
     private readonly usersRouter: Router,
-    private readonly usersService: UsersService,
+    private readonly usersService: UsersGenericService,
   ) {}
 
   useRoutes() {

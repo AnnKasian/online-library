@@ -31,9 +31,12 @@ class CopyItemBuilder implements CopyBuilder<CopyItem> {
     userId?: number;
     returnedAt: Date;
   }): void {
-    this.copy.bookId = bookId;
-    this.copy.userId = userId ?? undefined;
-    this.copy.returnedAt = returnedAt;
+    this.copy = {
+      ...this.copy,
+      bookId,
+      userId,
+      returnedAt,
+    };
   }
 
   addExtra({
@@ -45,9 +48,12 @@ class CopyItemBuilder implements CopyBuilder<CopyItem> {
     createdAt: Date;
     updatedAt: Date;
   }): void {
-    this.copy.id = id;
-    this.copy.createdAt = createdAt;
-    this.copy.updatedAt = updatedAt;
+    this.copy = {
+      ...this.copy,
+      id,
+      createdAt,
+      updatedAt,
+    };
   }
 }
 

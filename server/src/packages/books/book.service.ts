@@ -10,7 +10,7 @@ import { BookExceptionMessage } from './libs/enums';
 import { BookFilters, BookItem, BooksPageDto } from './libs/types';
 
 class BooksService {
-  private readonly booksManager: BooksManager;
+  private readonly booksManager: BooksManager<BookItem>;
 
   constructor(private readonly booksRepository: BooksRepository) {
     this.booksManager = new BooksManager(new BookItemBuilder());

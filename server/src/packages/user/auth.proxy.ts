@@ -4,23 +4,24 @@ import { ConfigService } from '#/services/config';
 import { EncryptService } from '#/services/encrypt';
 
 import { UserExceptionMessage } from './libs/enums';
-import { UserFilters, UserItem } from './libs/types';
-import { UsersService } from './users.service';
+import { UserFilters, UserItem, UsersGenericService } from './libs/types';
 
-class AuthProxy extends UsersService {
+class AuthProxy implements UsersGenericService {
+  constructor(private readonly usersService: UsersGenericService) {}
+
   async getByFilter({ password, ...filters }: UserFilters): Promise<UserItem> {
     if (!password) {
-      return super.getByFilter(filters);
+      return this.usersService.getByFilter(filters);
     }
 
-    const findedUser = await super.getByFilter(filters);
+    const findedUser = await this.usersService.getByFilter(filters);
 
     const isSamePassword = await EncryptService.compare(
       password,
       findedUser.password,
     );
 
-    if (isSamePassword) {
+    if (!isSamePassword) {
       throw new HttpException(
         HttpCode.NOT_FOUND,
         UserExceptionMessage.USER_NOT_FOUND,
@@ -28,6 +29,10 @@ class AuthProxy extends UsersService {
     }
 
     return findedUser;
+  }
+
+  async getAll(ids: number[]): Promise<UserItem[]> {
+    return this.usersService.getAll(ids);
   }
 
   async create({
@@ -43,7 +48,7 @@ class AuthProxy extends UsersService {
     const salt = await EncryptService.generateSalt(rounds);
     const hash = await EncryptService.generateHash(password, salt);
 
-    return super.create({ password: hash, ...data });
+    return this.usersService.create({ password: hash, ...data });
   }
 }
 

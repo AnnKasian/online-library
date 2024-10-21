@@ -1,1 +1,1 @@
-export { copyCreateDtoSchema, copyUpdateDtoSchema } from '@/packages/copies';
+export { copyCreateDtoSchema, copyReserveDtoSchema } from '@/packages/copies';

@@ -1,49 +1,83 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-import { DataStatus, DataStatusValue } from '#/libs/enums';
+import { DataStatus } from '#/libs/enums';
 import { UserDto } from '#/services/users';
 
-import { create, get } from './users.actions';
+import { authenticate, signIn, signOut, signUp } from './users.actions';
 
 const initialState: {
   user: UserDto | null;
   dataStatus: {
-    get: DataStatusValue;
-    create: DataStatusValue;
+    authenticate: DataStatus;
+    register: DataStatus;
   };
 } = {
   user: null,
   dataStatus: {
-    get: DataStatus.IDLE,
-    create: DataStatus.IDLE,
+    authenticate: DataStatus.IDLE,
+    register: DataStatus.IDLE,
   },
 };
 
 const { reducer, actions, name } = createSlice({
   initialState,
   name: 'users',
-  reducers: {},
+  reducers: {
+    signOut(state) {
+      state.user = null;
+      state.dataStatus.authenticate = DataStatus.REJECTED;
+    },
+  },
   extraReducers(builder) {
-    builder.addCase(get.pending, (state) => {
-      state.dataStatus.get = DataStatus.PENDING;
+    builder.addCase(authenticate.pending, (state) => {
+      state.dataStatus.authenticate = DataStatus.PENDING;
     });
-    builder.addCase(get.fulfilled, (state, action) => {
+    builder.addCase(authenticate.fulfilled, (state, action) => {
       state.user = action.payload;
-      state.dataStatus.get = DataStatus.FULFILLED;
+      state.dataStatus.authenticate = DataStatus.FULFILLED;
     });
-    builder.addCase(get.rejected, (state) => {
-      state.dataStatus.get = DataStatus.REJECTED;
+    builder.addCase(authenticate.rejected, (state) => {
+      state.dataStatus.authenticate = DataStatus.REJECTED;
+      state.dataStatus.register = DataStatus.REJECTED;
     });
 
-    builder.addCase(create.pending, (state) => {
-      state.dataStatus.create = DataStatus.PENDING;
+    builder.addCase(signIn.pending, (state) => {
+      state.dataStatus.register = DataStatus.PENDING;
     });
-    builder.addCase(create.fulfilled, (state, action) => {
+    builder.addCase(signIn.fulfilled, (state, action) => {
       state.user = action.payload;
-      state.dataStatus.create = DataStatus.FULFILLED;
+      state.dataStatus.register = DataStatus.FULFILLED;
+      state.dataStatus.authenticate = DataStatus.FULFILLED;
     });
-    builder.addCase(create.rejected, (state) => {
-      state.dataStatus.create = DataStatus.REJECTED;
+    builder.addCase(signIn.rejected, (state) => {
+      state.user = null;
+      state.dataStatus.register = DataStatus.REJECTED;
+      state.dataStatus.authenticate = DataStatus.REJECTED;
+    });
+
+    builder.addCase(signUp.pending, (state) => {
+      state.dataStatus.register = DataStatus.PENDING;
+    });
+    builder.addCase(signUp.fulfilled, (state, action) => {
+      state.user = action.payload;
+      state.dataStatus.authenticate = DataStatus.FULFILLED;
+      state.dataStatus.register = DataStatus.FULFILLED;
+    });
+    builder.addCase(signUp.rejected, (state) => {
+      state.user = null;
+      state.dataStatus.authenticate = DataStatus.REJECTED;
+      state.dataStatus.register = DataStatus.REJECTED;
+    });
+
+    builder.addCase(signOut.pending, (state) => {
+      state.dataStatus.authenticate = DataStatus.PENDING;
+    });
+    builder.addCase(signOut.fulfilled, (state) => {
+      state.user = null;
+      state.dataStatus.authenticate = DataStatus.REJECTED;
+    });
+    builder.addCase(signOut.rejected, (state) => {
+      state.dataStatus.authenticate = DataStatus.REJECTED;
     });
   },
 });

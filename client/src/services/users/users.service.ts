@@ -1,11 +1,12 @@
 import { AxiosInstance } from 'axios';
 
-import { ApiRoute, ApiRouteValue } from '#/libs/enums';
+import { ApiRoute } from '#/libs/enums';
 
-import { UserDto, UserSignUpDto } from './libs/types';
+import { UserApiRoute } from './libs/enums';
+import { UserDto, UserSignInDto, UserSignUpDto } from './libs/types';
 
 class UsersService {
-  private readonly baseUrl: ApiRouteValue;
+  private readonly baseUrl: ApiRoute;
   private readonly client: AxiosInstance;
 
   constructor(client: AxiosInstance) {
@@ -13,22 +14,38 @@ class UsersService {
     this.baseUrl = ApiRoute.USERS;
   }
 
-  async get(id: number): Promise<UserDto> {
-    const { data } = await this.client.get<UserDto>(`${this.baseUrl}/${id}`, {
-      context: {
-        avoidAuth: true,
-      },
-    });
+  async authenticate(): Promise<UserDto> {
+    const { data } = await this.client.get<UserDto>(
+      `${this.baseUrl}${UserApiRoute.AUTHENTICATE}`,
+    );
 
     return data;
   }
 
-  async create(payload: UserSignUpDto): Promise<UserDto> {
-    const { data } = await this.client.post<UserDto>(this.baseUrl, payload, {
-      context: {
-        avoidAuth: true,
+  async signIn(payload: UserSignInDto): Promise<UserDto> {
+    const { data } = await this.client.post<UserDto>(
+      `${this.baseUrl}${UserApiRoute.SIGN_IN}`,
+      payload,
+      {
+        context: {
+          avoidAuth: true,
+        },
       },
-    });
+    );
+
+    return data;
+  }
+
+  async signUp(payload: UserSignUpDto): Promise<UserDto> {
+    const { data } = await this.client.post<UserDto>(
+      `${this.baseUrl}${UserApiRoute.SIGN_UP}`,
+      payload,
+      {
+        context: {
+          avoidAuth: true,
+        },
+      },
+    );
 
     return data;
   }

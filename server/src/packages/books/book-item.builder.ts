@@ -34,10 +34,13 @@ class BookItemBuilder implements BookBuilder<BookItem> {
     genre: string;
     description?: string;
   }): void {
-    this.book.title = title;
-    this.book.author = author;
-    this.book.genre = genre;
-    this.book.description = description ?? undefined;
+    this.book = {
+      ...this.book,
+      title,
+      author,
+      genre,
+      description: description ?? undefined,
+    };
   }
 
   addExtra({
@@ -49,9 +52,12 @@ class BookItemBuilder implements BookBuilder<BookItem> {
     createdAt: Date;
     updatedAt: Date;
   }): void {
-    this.book.id = id;
-    this.book.createdAt = createdAt;
-    this.book.updatedAt = updatedAt;
+    this.book = {
+      ...this.book,
+      id,
+      createdAt,
+      updatedAt,
+    };
   }
 }
 

@@ -1,4 +1,4 @@
-import { UserRole } from '#/packages/user/libs/enums';
+import { UserRole } from '../enums';
 
 type UserDto = {
   id: number;
