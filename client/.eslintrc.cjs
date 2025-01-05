@@ -20,7 +20,7 @@ module.exports = {
   env: {
     browser: true,
   },
-  ignorePatterns: ['vite.config.ts'],
+  ignorePatterns: ['vite.config.ts', 'tailwind.config.ts', 'postcss.config.js'],
   rules: {
     'react/prop-types': 'off',
     'react/display-name': 'off',

@@ -1,31 +1,26 @@
-import { Container, ContainerProps, css, styled } from '@mui/material';
-import React from 'react';
-
-const PageContainer = styled(Container)(
-  ({ theme }) => css`
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    padding-top: ${theme.spacing(2)};
-    padding-bottom: ${theme.spacing(2)};
-  `,
-);
+import { Loader } from '../atoms';
+import { Header } from '../organisms';
 
 type Properties = {
   children: React.ReactNode;
-  maxWidth?: ContainerProps['maxWidth'];
-  className?: string;
+  isLoading?: boolean;
 };
 
 const PageTemplate = ({
   children,
-  maxWidth = 'md',
-  className,
+  isLoading = false,
 }: Properties): JSX.Element => {
   return (
-    <PageContainer maxWidth={maxWidth} className={className}>
-      {children}
-    </PageContainer>
+    <div className={'flex flex-col min-h-screen'}>
+      <div className={'sticky top-0 left-0 z-10 w-full'}>
+        <Header />
+      </div>
+      <div className={'flex flex-1 items-stretch'}>
+        <main className={'flex dlex-1 flex-col px-80 py-32 '}>
+          {isLoading ? <Loader /> : <>{children}</>}
+        </main>
+      </div>
+    </div>
   );
 };
 

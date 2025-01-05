@@ -1,46 +1,27 @@
-import { useEffect } from 'react';
+import { useBooks } from '#/api/books';
 
-import { Route } from '#/libs/enums';
-import { useAdminRights, useAppDispatch, useAppSelector } from '#/libs/hooks';
-import { booksActions } from '#/slices/books';
-
-import { Button, Loader } from '../atoms';
-import { BookPaper } from '../molecules';
-import { GridTemplate, PageTemplate } from '../templates';
+import { PageTemplate } from '../templates';
 
 const Books = (): JSX.Element => {
-  const dispatch = useAppDispatch();
-  const { books } = useAppSelector(({ books }) => ({
-    books: books.books?.books,
-  }));
-  const isAdmin = useAdminRights();
+  const { data, isLoading, isError, error } = useBooks();
 
-  useEffect(() => {
-    void dispatch(booksActions.getAll());
-  }, [dispatch]);
+  if (isError) {
+    console.error(error);
+    return <div>Error fetching books</div>;
+  }
 
-  if (!books) {
-    return <Loader />;
+  if (!data?.books) {
+    return <div>No books available</div>;
   }
 
   return (
-    <PageTemplate>
-      <GridTemplate
-        label="Books"
-        size={{
-          column: 200,
-          row: 170,
-        }}
-        info={
-          isAdmin ? <Button to={Route.BOOKS_CREATE}>Add</Button> : undefined
-        }
-      >
-        {books.map((book) => (
-          <BookPaper key={book.id} book={book} />
+    <PageTemplate isLoading={isLoading}>
+      <div>
+        {data.books.map((book) => (
+          <div key={book.id}>{book.title}</div>
         ))}
-      </GridTemplate>
+      </div>
     </PageTemplate>
   );
 };
-
 export { Books };

@@ -1,50 +1,77 @@
-import { Box, Divider, Typography, useTheme } from '@mui/material';
-import { useNavigate } from 'react-router';
+import { FormEvent, useState } from 'react';
 
-import { UserSignUpDto } from '@/packages/user';
-
-import { UserSignUpForm } from '#/components/organisms';
-import { PaperTemplate } from '#/components/templates';
-import { DataStatus, Route } from '#/libs/enums';
-import { useAppDispatch, useAppSelector } from '#/libs/hooks';
-import { usersActions } from '#/slices/users';
-
-import { Button } from '../atoms';
+import { useSignUp } from '#/api/users';
 
 const SignUp = (): JSX.Element => {
-  const theme = useTheme();
-  const navigate = useNavigate();
-  const dispatch = useAppDispatch();
-  const { dataStatus } = useAppSelector(({ users }) => ({
-    dataStatus: users.dataStatus.register,
-  }));
+  const mutation = useSignUp();
+  const [formData, setFormData] = useState({
+    fullName: '',
+    email: '',
+    password: '',
+    dateOfBirth: '',
+  });
 
-  const handleSubmit = (payload: UserSignUpDto) => {
-    void dispatch(usersActions.signUp(payload))
-      .unwrap()
-      .then(() => {
-        navigate(Route.BOOKS);
-      });
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
+  };
+
+  const handleSubmit = (e: FormEvent) => {
+    e.preventDefault();
+    const parsedData = {
+      ...formData,
+      dateOfBirth: new Date(formData.dateOfBirth),
+    };
+    mutation.mutate(parsedData);
   };
 
   return (
-    <PaperTemplate title="Sign up">
-      <UserSignUpForm
-        onSubmit={handleSubmit}
-        loading={dataStatus === DataStatus.PENDING}
-      />
-      <Divider />
-      <Box
-        display="flex"
-        justifyContent="center"
-        alignItems="center"
-        gap={theme.spacing(1)}
-      >
-        <Typography>Go to</Typography>
-        <Button to={Route.SIGN_IN}>Sign in</Button>
-      </Box>
-    </PaperTemplate>
+    <div>
+      <h1>Sign Up</h1>
+      <form onSubmit={handleSubmit}>
+        <div>
+          Name
+          <input
+            type="text"
+            name="fullName"
+            value={formData.fullName}
+            onChange={handleChange}
+            required
+          />
+        </div>
+        <div>
+          Date of birth
+          <input
+            type="date"
+            name="dateOfBirth"
+            value={formData.dateOfBirth}
+            onChange={handleChange}
+            required
+          />
+        </div>
+        <div>
+          Email
+          <input
+            type="email"
+            name="email"
+            value={formData.email}
+            onChange={handleChange}
+            required
+          />
+        </div>
+        <div>
+          Password
+          <input
+            type="password"
+            name="password"
+            value={formData.password}
+            onChange={handleChange}
+            required
+          />
+        </div>
+        <button type="submit">Sign Up</button>
+      </form>
+    </div>
   );
 };
-
 export { SignUp };

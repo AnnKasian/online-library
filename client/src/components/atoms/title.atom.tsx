@@ -1,21 +1,18 @@
-import { Box, Typography, useTheme } from '@mui/material';
+import { NavLink } from 'react-router-dom';
 
 import { Route } from '#/libs/enums';
 
-import { Button } from './button.atom';
-
 const Title = (): JSX.Element => {
-  const theme = useTheme();
-
   return (
-    <Button variant="text" to={Route.BOOKS}>
-      <Box display="flex" alignItems="center" gap={theme.spacing(1)}>
-        <img src="/favicon.png" alt="Library." width={40} height={40} />
-        <Typography variant="h5" color={'black'}>
-          Library
-        </Typography>
-      </Box>
-    </Button>
+    <NavLink
+      className={
+        'inline-flex gap-2.5 items-center justify-center no-underline transition-all duration-300 ease-in-out '
+      }
+      to={Route.ROOT}
+    >
+      <img alt="Library" height={40} src="/favicon.png" width={40} />
+      <span className={'text-2xl cursor-pointer'}>Library</span>
+    </NavLink>
   );
 };
 

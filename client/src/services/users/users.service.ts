@@ -46,7 +46,6 @@ class UsersService {
         },
       },
     );
-
     return data;
   }
 }

@@ -1,6 +1,12 @@
 {
   "extends": "../tsconfig.json",
-  "include": ["src", "typings", "vite.config.ts"],
+  "include": [
+    "src",
+    "typings",
+    "vite.config.ts",
+    "tailwind.config.ts",
+    "postcss.config.js"
+  ],
   "compilerOptions": {
     "target": "ESNext",
     "module": "ESNext",

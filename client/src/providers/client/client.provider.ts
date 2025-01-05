@@ -15,4 +15,6 @@ const createAppClient = () => {
   return client;
 };
 
-export { createAppClient };
+const apiClient = createAppClient();
+
+export { apiClient };
