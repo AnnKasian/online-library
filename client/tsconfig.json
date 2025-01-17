@@ -4,8 +4,8 @@
     "src",
     "typings",
     "vite.config.ts",
-    "tailwind.config.ts",
-    "postcss.config.js"
+    "tailwind.config.cjs",
+    "postcss.config.cjs"
   ],
   "compilerOptions": {
     "target": "ESNext",

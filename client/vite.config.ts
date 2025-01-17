@@ -11,6 +11,9 @@ const config = ({ mode }: ConfigEnv): ReturnType<typeof defineConfig> => {
     server: {
       port: Number(VITE_APP_DEVELOPMENT_PORT),
     },
+    build: {
+      sourcemap: true,
+    },
   });
 };
 
