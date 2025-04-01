@@ -82,6 +82,10 @@ class CopiesService {
       userId: null,
     });
   }
+
+  async delete(ids: number[], bookId: number): Promise<void> {
+    await this.copiesRepository.delete(ids, bookId);
+  }
 }
 
 export { CopiesService };

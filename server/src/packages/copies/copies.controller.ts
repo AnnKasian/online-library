@@ -20,8 +20,8 @@ import {
 } from './libs/types';
 
 class CopiesController extends ItemController {
-  get = undefined;
   delete = undefined;
+  get = undefined;
 
   constructor(
     private readonly copiesRouter: Router,
@@ -96,6 +96,24 @@ class CopiesController extends ItemController {
       }),
       handleAsync(async (request, response) => {
         const payload = request.body;
+
+        const copies = await this.copiesService.getAll({
+          bookId: payload.bookId,
+          status: CopyStatus.FREE,
+        });
+
+        if (payload.amount > copies.length) {
+          payload.amount -= copies.length;
+        } else if (payload.amount < copies.length) {
+          await this.deleteCopies(
+            payload.bookId,
+            copies.length - payload.amount,
+          );
+          payload.amount = 0;
+        } else {
+          payload.amount = 0;
+        }
+
         await this.copiesService.createAll(payload);
 
         response.status(HttpCode.CREATED).json(payload);
@@ -150,6 +168,17 @@ class CopiesController extends ItemController {
       user: usersSafe[index] as UserDto,
       book: books.books[index] as BookDto,
     }));
+  }
+
+  private async deleteCopies(bookId: number, amount: number): Promise<void> {
+    const ids = await this.copiesService.getAll({
+      bookId,
+      status: CopyStatus.FREE,
+    });
+    const idsToDelete = ids.map(({ id }) => id).slice(0, amount);
+    if (idsToDelete.length > 0) {
+      await this.copiesService.delete(idsToDelete, bookId);
+    }
   }
 }
 export { CopiesController };

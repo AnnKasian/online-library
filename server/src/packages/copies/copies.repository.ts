@@ -1,6 +1,5 @@
 import { Prisma } from '@prisma/client';
 
-import { ItemRepository } from '#/libs/types';
 import { PrismaService } from '#/services/prisma';
 
 import { CopyItemBuilder } from './copies-item.builder';
@@ -8,12 +7,11 @@ import { CopiesManager } from './copies.manager';
 import { CopyStatus } from './libs/enums';
 import { CopyFilters, CopyItem, CopyRaw } from './libs/types';
 
-class CopiesRepository extends ItemRepository<CopyItem> {
+class CopiesRepository {
   private readonly copiesManager: CopiesManager<CopyItem>;
   private readonly copies: Prisma.CopyDelegate;
 
   constructor() {
-    super();
     this.copies = PrismaService.instance.copy;
     this.copiesManager = new CopiesManager(new CopyItemBuilder());
   }
@@ -93,8 +91,22 @@ class CopiesRepository extends ItemRepository<CopyItem> {
     return this.copiesManager.initializeRaw(copy);
   }
 
-  delete(): Promise<CopyItem> {
-    return Promise.resolve({} as CopyItem);
+  async delete(ids: number[], bookId: number): Promise<void> {
+    await this.copies.deleteMany({
+      where: {
+        id: {
+          in: ids,
+        },
+        AND: [
+          {
+            bookId,
+          },
+          {
+            userId: null,
+          },
+        ],
+      },
+    });
   }
 }
 

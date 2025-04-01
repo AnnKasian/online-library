@@ -9,7 +9,7 @@ abstract class ItemRepository<Item extends { id: number }> {
 
   abstract update(id: Item['id'], data: Partial<Item>): Promise<Item>;
 
-  abstract delete(id: Item['id']): Promise<Item>;
+  abstract delete(id: Item['id']): Promise<void>;
 }
 
 export { ItemRepository };
