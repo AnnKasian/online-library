@@ -1,7 +1,16 @@
 import { Navigate, createBrowserRouter } from 'react-router-dom';
 
 import { App } from '#/app';
-import { Books, SignIn, SignUp } from '#/components/pages';
+import {
+  AdminCopies,
+  Book,
+  BookCreate,
+  BookUpdate,
+  Books,
+  SignIn,
+  SignUp,
+  UserCopies,
+} from '#/components/pages';
 import { Route } from '#/libs/enums';
 
 const createAppRouter = () =>
@@ -22,26 +31,26 @@ const createAppRouter = () =>
           path: Route.BOOKS,
           element: <Books />,
         },
-        // {
-        //   path: Route.BOOK_$ID,
-        //   element: <Book />,
-        // },
-        // {
-        //   path: Route.BOOKS_CREATE,
-        //   element: <BooksCreate />,
-        // },
-        // {
-        //   path: Route.BOOKS_UPDATE_$ID,
-        //   element: <BooksUpdate />,
-        // },
-        // {
-        //   path: Route.MY_COPIES,
-        //   element: <MyCopies />,
-        // },
-        // {
-        //   path: Route.COPIES,
-        //   element: <AdminCopies />,
-        // },
+        {
+          path: Route.BOOK_$ID,
+          element: <Book />,
+        },
+        {
+          path: Route.BOOKS_CREATE,
+          element: <BookCreate />,
+        },
+        {
+          path: Route.BOOKS_UPDATE_$ID,
+          element: <BookUpdate />,
+        },
+        {
+          path: Route.MY_COPIES,
+          element: <UserCopies />,
+        },
+        {
+          path: Route.COPIES,
+          element: <AdminCopies />,
+        },
         {
           path: Route.OTHER,
           element: <Navigate to={Route.BOOKS} />,
