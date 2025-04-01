@@ -4,7 +4,7 @@ const Header = (): JSX.Element => {
   return (
     <header
       className={
-        'flex items-center justify-between px-20 py-16 border-b-1 border-solid bg-black'
+        'flex items-center justify-between px-4 py-3 border-b-accent border-b-2'
       }
     >
       <Title />

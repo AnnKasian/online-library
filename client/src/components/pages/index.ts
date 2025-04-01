@@ -1,3 +1,8 @@
 export { Books } from './books.page';
+export { Book } from './book.page';
 export { SignUp } from './sign-up.page';
 export { SignIn } from './sign-in.page';
+export { BookUpdate } from './book-update.page';
+export { BookCreate } from './book-create.page';
+export { AdminCopies } from './admin-copies.page';
+export { UserCopies } from './user-copies.page';
