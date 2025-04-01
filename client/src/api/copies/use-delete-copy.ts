@@ -9,8 +9,8 @@ const useCreateCopy = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (newCopy: CopyCreateDto) => {
-      return copiesService.create(newCopy);
+    mutationFn: (bookId: number) => {
+      return copiesService.delete(newCopy);
     },
     onMutate: async () => {
       await queryClient.cancelQueries({ queryKey: copyQueryKeys.all });

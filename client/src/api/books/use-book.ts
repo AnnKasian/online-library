@@ -1,12 +1,9 @@
 import { useQuery } from '@tanstack/react-query';
 import { useParams } from 'react-router-dom';
 
-import { apiClient } from '#/providers/client';
-import { BooksService } from '#/services/books';
+import { booksService } from '#/providers/store';
 
 import { bookQueryKeys } from './book-query-keys';
-
-const booksService = new BooksService(apiClient);
 
 const useBook = () => {
   const { id } = useParams();

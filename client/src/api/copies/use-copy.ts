@@ -1,12 +1,9 @@
 import { useQuery } from '@tanstack/react-query';
 import { useParams } from 'react-router-dom';
 
-import { apiClient } from '#/providers/client';
-import { CopiesService } from '#/services/copies';
+import { copiesService } from '#/providers/store';
 
 import { copyQueryKeys } from './copy-query-keys';
-
-const copiesService = new CopiesService(apiClient);
 
 const useCopy = () => {
   const { id } = useParams();

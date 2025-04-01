@@ -4,12 +4,10 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { getEndpoint } from '@/libs/helpers';
 
 import { Route } from '#/libs/enums';
-import { apiClient } from '#/providers/client';
-import { BookUpdateDto, BooksService } from '#/services/books';
+import { booksService } from '#/providers/store';
+import { BookUpdateDto } from '#/services/books';
 
 import { bookQueryKeys } from './book-query-keys';
-
-const booksService = new BooksService(apiClient);
 
 const useUpdateBook = () => {
   const { id } = useParams();

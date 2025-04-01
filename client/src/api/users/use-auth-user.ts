@@ -1,11 +1,8 @@
 import { useQuery } from '@tanstack/react-query';
 
-import { apiClient } from '#/providers/client';
-import { UsersService } from '#/services/users';
+import { usersService } from '#/providers/store';
 
 import { userQueryKeys } from './user-query-keys';
-
-const usersService = new UsersService(apiClient);
 
 const useAuth = () => {
   return useQuery({

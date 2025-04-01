@@ -1,20 +1,17 @@
 import { useQuery } from '@tanstack/react-query';
 
-import { apiClient } from '#/providers/client';
-import { CopiesService } from '#/services/copies';
+import { copiesService } from '#/providers/store';
 
 import { copyQueryKeys } from './copy-query-keys';
 
-const copiesService = new CopiesService(apiClient);
-
-const useCopies = () => {
+const useReservedCopies = () => {
   return useQuery({
     queryKey: copyQueryKeys.all,
     queryFn: async () => {
-      return await copiesService.getReserved();
+      return await copiesService.getAll();
     },
     retry: 1,
   });
 };
 
-export { useCopies };
+export { useReservedCopies };

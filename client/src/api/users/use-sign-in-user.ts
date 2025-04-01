@@ -2,12 +2,13 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
 
 import { Route } from '#/libs/enums';
-import { apiClient } from '#/providers/client';
-import { UserSignInDto, UsersService } from '#/services/users';
+import { usersService } from '#/providers/store';
+import { StorageKey, StorageService } from '#/services/storage';
+import { UserSignInDto } from '#/services/users';
 
 import { userQueryKeys } from './user-query-keys';
 
-const usersService = new UsersService(apiClient);
+StorageService.getInstance();
 
 const useSignIn = () => {
   const queryClient = useQueryClient();
@@ -20,7 +21,8 @@ const useSignIn = () => {
     onMutate: async () => {
       await queryClient.cancelQueries({ queryKey: userQueryKeys.all });
     },
-    onSuccess: () => {
+    onSuccess: (user) => {
+      StorageService.getInstance().set(StorageKey.TOKEN, user.id.toString());
       navigate(Route.ROOT);
     },
     onSettled: async () => {

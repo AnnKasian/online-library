@@ -4,12 +4,9 @@ import { useNavigate } from 'react-router-dom';
 import { IdDto } from '@/libs/types';
 
 import { Route } from '#/libs/enums';
-import { apiClient } from '#/providers/client';
-import { CopiesService } from '#/services/copies';
+import { copiesService } from '#/providers/store';
 
 import { copyQueryKeys } from './copy-query-keys';
-
-const copiesService = new CopiesService(apiClient);
 
 const useCopy = ({ id }: IdDto) => {
   const queryClient = useQueryClient();

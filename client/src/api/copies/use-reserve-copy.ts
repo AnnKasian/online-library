@@ -1,13 +1,11 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
-import { apiClient } from '#/providers/client';
-import { CopiesService, CopyReserveDto } from '#/services/copies';
+import { copiesService } from '#/providers/store';
+import { CopyReserveDto } from '#/services/copies';
 
 import { copyQueryKeys } from './copy-query-keys';
 
-const copiesService = new CopiesService(apiClient);
-
-const useUpdateBook = () => {
+const useReserveCopy = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
@@ -26,4 +24,4 @@ const useUpdateBook = () => {
     },
   });
 };
-export { useUpdateBook };
+export { useReserveCopy };

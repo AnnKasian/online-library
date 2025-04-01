@@ -1,11 +1,9 @@
 import { useQuery } from '@tanstack/react-query';
 
-import { apiClient } from '#/providers/client';
-import { BooksPageDto, BooksService } from '#/services/books';
+import { booksService } from '#/providers/store';
+import { BooksPageDto } from '#/services/books';
 
 import { bookQueryKeys } from './book-query-keys';
-
-const booksService = new BooksService(apiClient);
 
 const useBooks = () => {
   return useQuery<BooksPageDto>({
