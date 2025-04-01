@@ -2,7 +2,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
 
 import { Route } from '#/libs/enums';
-import { usersService } from '#/providers/store';
+import { useServiceStore } from '#/providers/store';
 import { StorageKey, StorageService } from '#/services/storage';
 import { UserSignInDto } from '#/services/users';
 
@@ -13,6 +13,7 @@ StorageService.getInstance();
 const useSignIn = () => {
   const queryClient = useQueryClient();
   const navigate = useNavigate();
+  const { usersService } = useServiceStore();
 
   return useMutation({
     mutationFn: (newUser: UserSignInDto) => {

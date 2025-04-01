@@ -1,12 +1,13 @@
 import { useQuery } from '@tanstack/react-query';
 import { useParams } from 'react-router-dom';
 
-import { booksService } from '#/providers/store';
+import { useServiceStore } from '#/providers/store';
 
 import { bookQueryKeys } from './book-query-keys';
 
 const useBook = () => {
   const { id } = useParams();
+  const { booksService } = useServiceStore();
 
   return useQuery({
     queryKey: bookQueryKeys.detail(Number(id)),

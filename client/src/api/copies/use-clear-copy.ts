@@ -4,12 +4,13 @@ import { useNavigate } from 'react-router-dom';
 import { IdDto } from '@/libs/types';
 
 import { Route } from '#/libs/enums';
-import { copiesService } from '#/providers/store';
+import { useServiceStore } from '#/providers/store';
 
 import { copyQueryKeys } from './copy-query-keys';
 
 const useCopy = ({ id }: IdDto) => {
   const queryClient = useQueryClient();
+  const { copiesService } = useServiceStore();
   const navigate = useNavigate();
 
   return useMutation({

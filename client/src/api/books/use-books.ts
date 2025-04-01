@@ -1,11 +1,12 @@
 import { useQuery } from '@tanstack/react-query';
 
-import { booksService } from '#/providers/store';
+import { useServiceStore } from '#/providers/store';
 import { BooksPageDto } from '#/services/books';
 
 import { bookQueryKeys } from './book-query-keys';
 
 const useBooks = () => {
+  const { booksService } = useServiceStore();
   return useQuery<BooksPageDto>({
     queryKey: bookQueryKeys.all,
     queryFn: async () => {

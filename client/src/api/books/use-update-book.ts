@@ -4,7 +4,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { getEndpoint } from '@/libs/helpers';
 
 import { Route } from '#/libs/enums';
-import { booksService } from '#/providers/store';
+import { useServiceStore } from '#/providers/store';
 import { BookUpdateDto } from '#/services/books';
 
 import { bookQueryKeys } from './book-query-keys';
@@ -13,6 +13,7 @@ const useUpdateBook = () => {
   const { id } = useParams();
   const queryClient = useQueryClient();
   const navigate = useNavigate();
+  const { booksService } = useServiceStore();
 
   return useMutation({
     mutationFn: async (updatedBook: BookUpdateDto) => {

@@ -1,12 +1,13 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
-import { copiesService } from '#/providers/store';
+import { useServiceStore } from '#/providers/store';
 import { CopyCreateDto } from '#/services/copies';
 
 import { copyQueryKeys } from './copy-query-keys';
 
 const useCreateCopy = () => {
   const queryClient = useQueryClient();
+  const { copiesService } = useServiceStore();
 
   return useMutation({
     mutationFn: (newCopy: CopyCreateDto) => {

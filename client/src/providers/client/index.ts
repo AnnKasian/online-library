@@ -1,2 +1,2 @@
 export type { ClientContext } from './libs/types';
-export { apiClient } from './client.provider';
+export { createAppClient } from './client.provider';
