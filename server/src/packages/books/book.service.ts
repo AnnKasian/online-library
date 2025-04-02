@@ -85,6 +85,10 @@ class BooksService {
         : books,
     };
   }
+
+  async delete(id: number): Promise<void> {
+    await this.booksRepository.delete(id);
+  }
 }
 
 export { BooksService };

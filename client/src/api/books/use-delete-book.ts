@@ -1,28 +1,34 @@
-// import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useNavigate, useParams } from 'react-router-dom';
 
-// import { apiClient } from '#/providers/client';
-// import { BookCreateDto, BooksService } from '#/services/books';
+import { Route } from '#/libs/enums';
+import { useServiceStore } from '#/providers/store';
 
-// import { bookQueryKeys } from './book-query-keys';
+import { bookQueryKeys } from './book-query-keys';
 
-// const booksService = new BooksService(apiClient);
+const useDeleteBook = () => {
+  const { id } = useParams();
+  const navigate = useNavigate();
+  const queryClient = useQueryClient();
+  const { booksService } = useServiceStore();
 
-// const useDeleteBook = () => {
-//   const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async () => {
+      await queryClient.cancelQueries({
+        queryKey: bookQueryKeys.detail(Number(id)),
+      });
+      return booksService.delete(Number(id));
+    },
+    onSuccess: () => {
+      navigate(Route.BOOKS);
+    },
+    onSettled: async () => {
+      await queryClient.invalidateQueries({
+        queryKey: bookQueryKeys.all,
+      });
+      navigate(Route.BOOKS);
+    },
+  });
+};
 
-//   return useMutation({
-//     mutationFn: (id: number) => {
-//       return booksService.d;
-//     },
-//     onMutate: async () => {
-//       await queryClient.cancelQueries({ queryKey: bookQueryKeys.all });
-//     },
-//     onSuccess: async () => {
-//       await queryClient.invalidateQueries({ queryKey: bookQueryKeys.all });
-//     },
-//     onSettled: async () => {
-//       await queryClient.invalidateQueries({ queryKey: bookQueryKeys.all });
-//     },
-//   });
-// };
-// export { useDeleteBook };
+export { useDeleteBook };

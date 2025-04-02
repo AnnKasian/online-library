@@ -17,8 +17,6 @@ import {
 } from './libs/types';
 
 class BooksController extends ItemController {
-  delete = undefined;
-
   constructor(
     private readonly booksRouter: Router,
     private readonly booksService: BooksService,
@@ -74,6 +72,7 @@ class BooksController extends ItemController {
       }),
     );
   }
+
   getAll(): void {
     this.booksRouter.get<string, {}, BooksPageDto>(
       BookApiRoute.GET_ALL,
@@ -81,6 +80,21 @@ class BooksController extends ItemController {
         const book = await this.booksService.getAll();
 
         response.status(HttpCode.OK).json(book);
+      }),
+    );
+  }
+
+  delete(): void {
+    this.booksRouter.delete<string, IdDto, BookDto>(
+      BookApiRoute.DELETE,
+      validateSchemas({
+        params: idDtoSchema,
+      }),
+      handleAsync(async (request, response) => {
+        const payload = request.params.id;
+        await this.booksService.delete(payload);
+
+        response.status(HttpCode.OK);
       }),
     );
   }

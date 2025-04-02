@@ -58,6 +58,14 @@ class BooksService {
 
     return data;
   }
+
+  async delete(id: number): Promise<void> {
+    await this.client.delete<BookDto>(
+      getEndpoint(`${this.baseUrl}${BookApiRoute.DELETE}`, {
+        id,
+      }),
+    );
+  }
 }
 
 export { BooksService };

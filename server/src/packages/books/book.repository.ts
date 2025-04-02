@@ -140,8 +140,13 @@ class BooksRepository extends ItemRepository<BookItem> {
 
     return books.map((book) => this.booksManager.initializeRaw(book));
   }
-  delete(): Promise<BookItem> {
-    return Promise.resolve({} as BookItem);
+
+  async delete(id: number): Promise<void> {
+    await this.books.delete({
+      where: {
+        id,
+      },
+    });
   }
 }
 
