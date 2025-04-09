@@ -34,7 +34,7 @@ const PageTemplate = ({
             {children}
           </div>
         ) : (
-          <main className="grid grid-cols-[repeat(auto-fill,minmax(200px,1fr))] gap-4 px-4 pb-5">
+          <main className="grid grid-cols-[repeat(auto-fill,minmax(220px,1fr))] gap-4 px-4 pb-5">
             {children}
           </main>
         )}
