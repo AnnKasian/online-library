@@ -6,13 +6,13 @@ import {
   UserFilters,
   UserItem,
   UserSignUpDto,
-  UsersGenericService,
+  UserUpdateDto,
 } from './libs/types';
 import { UserItemBuilder } from './user-item.builder';
 import { UsersManager } from './user.manager';
 import { UsersRepository } from './users.repository';
 
-class UsersService implements UsersGenericService {
+class UsersService {
   private readonly usersManager: UsersManager<UserItem>;
 
   constructor(private readonly usersRepository: UsersRepository) {
@@ -64,6 +64,8 @@ class UsersService implements UsersGenericService {
       );
     }
 
+    dateOfBirth = dateOfBirth || new Date();
+
     return this.usersRepository.create(
       this.usersManager.initialize({
         fullName,
@@ -72,6 +74,26 @@ class UsersService implements UsersGenericService {
         password,
       }),
     );
+  }
+
+  async update(
+    id: number,
+    { fullName, email, newPassword }: Partial<UserUpdateDto>,
+  ): Promise<UserItem> {
+    const findedUser = await this.usersRepository.find({ id });
+
+    if (!findedUser) {
+      throw new HttpException(
+        HttpCode.NOT_FOUND,
+        UserExceptionMessage.USER_NOT_FOUND,
+      );
+    }
+
+    return this.usersRepository.update(id, {
+      fullName,
+      email,
+      password: newPassword,
+    });
   }
 }
 

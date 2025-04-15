@@ -10,7 +10,9 @@ import {
   SignIn,
   SignUp,
   UserCopies,
+  UserPage,
 } from '#/components/pages';
+import { UserUpdate } from '#/components/pages/user-update.page';
 import { Route } from '#/libs/enums';
 
 const createAppRouter = () =>
@@ -26,6 +28,14 @@ const createAppRouter = () =>
         {
           path: Route.SIGN_UP,
           element: <SignUp />,
+        },
+        {
+          path: Route.USER_PAGE,
+          element: <UserPage />,
+        },
+        {
+          path: Route.USER_UPDATE_$ID,
+          element: <UserUpdate />,
         },
         {
           path: Route.BOOKS,

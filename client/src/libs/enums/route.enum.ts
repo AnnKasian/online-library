@@ -1,6 +1,8 @@
 const Route = {
   SIGN_IN: '/sign-in',
   SIGN_UP: '/sign-up',
+  USER_PAGE: '/user',
+  USER_UPDATE_$ID: '/update/:id',
   BOOKS: '/books',
   BOOK_$ID: '/books/:id',
   BOOKS_CREATE: '/admin/book/create',

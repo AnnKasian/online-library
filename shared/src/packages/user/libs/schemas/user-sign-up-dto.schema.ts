@@ -30,7 +30,8 @@ const userSignUpDtoSchema = z.object({
       required_error: UserValidationMessage.DATE_REQUIRED,
       invalid_type_error: UserValidationMessage.DATE_STRING,
     })
-    .max(new Date(), { message: UserValidationMessage.DATE_VALID }),
+    .max(new Date(), { message: UserValidationMessage.DATE_VALID })
+    .nullable(),
 });
 
 export { userSignUpDtoSchema };

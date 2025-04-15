@@ -8,6 +8,7 @@ import {
   UseFormHandleSubmit,
   UseFormReset,
   UseFormResetField,
+  UseFormSetError,
   UseFormSetValue,
   UseFormWatch,
   ValidationMode,
@@ -30,6 +31,7 @@ const useAppForm = <T extends FieldValues = FieldValues>({
   resetField: UseFormResetField<T>;
   setValue: UseFormSetValue<T>;
   getValues: UseFormGetValues<T>;
+  setError: UseFormSetError<T>;
   control: Control<T>;
   errors: FieldErrors<T>;
   isValid: boolean;
@@ -42,6 +44,7 @@ const useAppForm = <T extends FieldValues = FieldValues>({
     resetField,
     setValue,
     getValues,
+    setError,
     control,
     formState: { errors, isValid, isDirty },
   } = useForm<T>({
@@ -65,6 +68,7 @@ const useAppForm = <T extends FieldValues = FieldValues>({
     resetField,
     setValue,
     getValues,
+    setError,
     control,
     errors,
     isValid,

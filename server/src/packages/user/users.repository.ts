@@ -63,12 +63,26 @@ class UsersRepository extends ItemRepository<UserItem> {
     return Promise.resolve(0);
   }
 
-  update(): Promise<UserItem> {
-    return Promise.resolve({} as UserItem);
+  async update(
+    id: number,
+    { fullName, email, password }: Partial<UserItem>,
+  ): Promise<UserItem> {
+    const user = await this.users.update({
+      where: {
+        id,
+      },
+      data: {
+        fullName,
+        email,
+        password,
+      },
+    });
+
+    return this.usersManager.initializeRaw(user);
   }
 
-  delete(): Promise<UserItem> {
-    return Promise.resolve({} as UserItem);
+  delete(): Promise<void> {
+    return Promise.resolve();
   }
 }
 

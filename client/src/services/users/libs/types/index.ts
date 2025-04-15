@@ -1,1 +1,6 @@
-export type { UserDto, UserSignUpDto, UserSignInDto } from '@/packages/user';
+export type {
+  UserDto,
+  UserSignUpDto,
+  UserSignInDto,
+  UserUpdateDto,
+} from '@/packages/user';

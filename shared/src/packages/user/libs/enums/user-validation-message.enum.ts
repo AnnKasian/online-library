@@ -15,6 +15,8 @@ const UserValidationMessage = {
   DATE_REQUIRED: 'Date is required',
   DATE_STRING: 'Date should be a string.',
   DATE_VALID: 'Date cannot be from the future.',
+  UPDATE_PASSWORD_REQUIRED:
+    'Both old and new passwords must be filled when changing password',
 };
 
 export { UserValidationMessage };

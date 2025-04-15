@@ -4,21 +4,22 @@ import { ConfigService } from '#/services/config';
 import { EncryptService } from '#/services/encrypt';
 
 import { UserExceptionMessage } from './libs/enums';
-import { UserFilters, UserItem, UsersGenericService } from './libs/types';
+import { UserFilters, UserItem, UserUpdateDto } from './libs/types';
+import { UsersService } from './users.service';
 
-class AuthProxy implements UsersGenericService {
-  constructor(private readonly usersService: UsersGenericService) {}
+class AuthProxy {
+  constructor(private readonly usersService: UsersService) {}
 
   async getByFilter({ password, ...filters }: UserFilters): Promise<UserItem> {
     if (!password) {
       return this.usersService.getByFilter(filters);
     }
 
-    const findedUser = await this.usersService.getByFilter(filters);
+    const foundUser = await this.usersService.getByFilter(filters);
 
     const isSamePassword = await EncryptService.compare(
       password,
-      findedUser.password,
+      foundUser.password,
     );
 
     if (!isSamePassword) {
@@ -28,11 +29,33 @@ class AuthProxy implements UsersGenericService {
       );
     }
 
-    return findedUser;
+    return foundUser;
   }
 
   async getAll(ids: number[]): Promise<UserItem[]> {
     return this.usersService.getAll(ids);
+  }
+
+  async update(data: UserUpdateDto): Promise<UserItem> {
+    const { oldPassword, email, newPassword, fullName, oldEmail } = data;
+
+    const foundUser = await this.getByFilter({
+      email: oldEmail,
+      ...(oldPassword ? { password: oldPassword } : {}),
+    });
+
+    let hash: string | undefined;
+    if (newPassword && oldPassword) {
+      const rounds = ConfigService.instance.schema.encrypt.rounds;
+      const salt = await EncryptService.generateSalt(rounds);
+      hash = await EncryptService.generateHash(newPassword, salt);
+    }
+
+    return this.usersService.update(foundUser.id, {
+      ...(hash ? { newPassword: hash } : {}),
+      email: email ?? oldEmail,
+      fullName,
+    });
   }
 
   async create({
@@ -42,7 +65,7 @@ class AuthProxy implements UsersGenericService {
     email: string;
     password: string;
     fullName: string;
-    dateOfBirth: Date;
+    dateOfBirth: Date | null;
   }): Promise<UserItem> {
     const rounds = ConfigService.instance.schema.encrypt.rounds;
     const salt = await EncryptService.generateSalt(rounds);

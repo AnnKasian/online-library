@@ -1,1 +1,5 @@
-export { userSignInDtoSchema, userSignUpDtoSchema } from '@/packages/user';
+export {
+  userSignInDtoSchema,
+  userSignUpDtoSchema,
+  userUpdateDtoSchema,
+} from '@/packages/user';

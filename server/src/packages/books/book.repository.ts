@@ -123,6 +123,7 @@ class BooksRepository extends ItemRepository<BookItem> {
 
     return this.booksManager.initializeRaw(book);
   }
+
   async findAll(ids?: number[]): Promise<BookItem[]> {
     const books = await this.books.findMany({
       where: {

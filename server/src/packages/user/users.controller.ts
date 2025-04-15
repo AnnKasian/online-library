@@ -2,26 +2,33 @@ import { Router } from 'express';
 
 import { HttpCode } from '#/libs/enums';
 import { handleAsync, validateSchemas } from '#/libs/middlewares';
+import { idDtoSchema } from '#/libs/schemas';
 
+import { AuthProxy } from './auth.proxy';
 import { UserApiRoute } from './libs/enums';
-import { userSignInDtoSchema, userSignUpDtoSchema } from './libs/schemas';
+import {
+  userSignInDtoSchema,
+  userSignUpDtoSchema,
+  userUpdateDtoSchema,
+} from './libs/schemas';
 import {
   UserDto,
   UserSignInDto,
   UserSignUpDto,
-  UsersGenericService,
+  UserUpdateDto,
 } from './libs/types';
 
 class UsersController {
   constructor(
     private readonly usersRouter: Router,
-    private readonly usersService: UsersGenericService,
+    private readonly usersService: AuthProxy,
   ) {}
 
   useRoutes() {
     this.authenticate();
     this.signIn();
     this.signUp();
+    this.put();
   }
 
   authenticate(): void {
@@ -62,6 +69,22 @@ class UsersController {
         const { password, ...user } = await this.usersService.create(payload);
 
         response.status(HttpCode.CREATED).json(user);
+      }),
+    );
+  }
+
+  put(): void {
+    this.usersRouter.put<string, {}, UserDto, UserUpdateDto>(
+      UserApiRoute.UPDATE,
+      validateSchemas({
+        params: idDtoSchema,
+        body: userUpdateDtoSchema,
+      }),
+      handleAsync(async (request, response) => {
+        const payload = request.body;
+        const user = await this.usersService.update(payload);
+
+        response.status(HttpCode.OK).json(user);
       }),
     );
   }

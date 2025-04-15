@@ -1,9 +1,16 @@
 import { AxiosInstance } from 'axios';
 
+import { getEndpoint } from '@/libs/helpers';
+
 import { ApiRoute } from '#/libs/enums';
 
 import { UserApiRoute } from './libs/enums';
-import { UserDto, UserSignInDto, UserSignUpDto } from './libs/types';
+import {
+  UserDto,
+  UserSignInDto,
+  UserSignUpDto,
+  UserUpdateDto,
+} from './libs/types';
 
 class UsersService {
   private readonly baseUrl: ApiRoute;
@@ -46,6 +53,17 @@ class UsersService {
         },
       },
     );
+    return data;
+  }
+
+  async update(id: number, payload: UserUpdateDto): Promise<UserDto> {
+    const { data } = await this.client.put<UserDto>(
+      getEndpoint(`${this.baseUrl}${UserApiRoute.UPDATE}`, {
+        id,
+      }),
+      payload,
+    );
+
     return data;
   }
 }
