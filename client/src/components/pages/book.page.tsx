@@ -35,9 +35,9 @@ const Book = (): JSX.Element => {
     };
   };
 
-  const handleEditClick = (bookId: number) => {
+  const handleEditClick = (id: number) => {
     return () => {
-      navigate(getEndpoint(Route.BOOKS_UPDATE_$ID, { id: bookId }));
+      navigate(getEndpoint(Route.BOOKS_UPDATE_$ID, { id }));
     };
   };
 

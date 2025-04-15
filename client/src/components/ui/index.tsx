@@ -1,3 +1,4 @@
+export { Avatar, AvatarImage, AvatarFallback } from './avatar';
 export { Button } from './button';
 export { Calendar } from './calendar';
 export {

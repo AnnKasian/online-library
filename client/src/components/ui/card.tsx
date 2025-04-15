@@ -3,30 +3,21 @@ import * as React from 'react';
 
 import { cn } from '#/libs/helpers';
 
-const cardVariants = cva('rounded-xl border bg-secondary shadow', {
-  variants: {
-    variant: {
-      // default: 'max-w-60',
-      // destructive:
-      //   'bg-destructive text-destructive-foreground shadow-sm hover:bg-destructive/90', /*red or smth*/
-      // outline:
-      //   'border border-input bg-background shadow-sm hover:bg-accent hover:text-accent-foreground',
-      // form: 'bg-secondary text-secondary-foreground shadow-sm hover:bg-secondary/80',
-      // ghost: 'hover:bg-accent hover:text-accent-foreground',
-      // link: 'underline-offset-4 hover:underline',
+const cardVariants = cva(
+  'rounded-xl border bg-secondary text-foreground shadow',
+  {
+    variants: {
+      variant: {},
+      size: {
+        default: 'min-w-50 max-w-60',
+        form: 'min-w-72',
+      },
     },
-    size: {
-      default: 'min-w-50 max-w-60',
-      form: 'min-w-72',
-      // lg: 'h-10 rounded-md px-8',
-      // icon: 'h-9 w-9',
+    defaultVariants: {
+      size: 'default',
     },
   },
-  defaultVariants: {
-    // variant: 'default',
-    size: 'default',
-  },
-});
+);
 
 export type CardProps = {
   asChild?: boolean;
@@ -63,7 +54,7 @@ const CardTitle = React.forwardRef<
   <div
     ref={ref}
     className={cn(
-      'flex justify-center font-bold leading-none tracking-tight',
+      'flex justify-center font-bold text-foreground leading-none tracking-tight',
       className,
     )}
     {...props}

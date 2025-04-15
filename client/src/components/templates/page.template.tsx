@@ -26,15 +26,19 @@ const PageTemplate = ({
         </div>
       )}
 
-      <div className={'grid items-stretch border-t-2 border-t-accent pt-6'}>
+      <div className={'grid items-stretch '}>
         {isLoading ? (
           <Loader />
-        ) : isForm || isBookPage ? (
-          <div className="flex justify-center items-center self-center ">
+        ) : isForm ? (
+          <div className="flex justify-center items-center self-center border-none">
+            {children}
+          </div>
+        ) : isBookPage ? (
+          <div className="flex justify-center items-center self-center border-t-2 border-t-accent pt-6">
             {children}
           </div>
         ) : (
-          <main className="grid grid-cols-[repeat(auto-fill,minmax(220px,1fr))] gap-4 px-4 pb-5">
+          <main className="grid grid-cols-[repeat(auto-fill,minmax(220px,1fr))] gap-4 px-4 pb-5 border-t-2 border-t-accent pt-6">
             {children}
           </main>
         )}

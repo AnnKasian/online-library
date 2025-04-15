@@ -74,7 +74,7 @@ const SignUp = (): JSX.Element => {
                     variant="outline"
                     className={cn(
                       'w-[280px] justify-start text-left font-normal',
-                      !form.watch('dateOfBirth') && 'text-muted-foreground',
+                      !form.watch('dateOfBirth') && 'text-muted',
                     )}
                   >
                     <CalendarIcon className="mr-2 h-4 w-4" />

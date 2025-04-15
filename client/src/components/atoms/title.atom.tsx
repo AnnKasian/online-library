@@ -11,7 +11,7 @@ const Title = (): JSX.Element => {
       to={Route.ROOT}
     >
       <img alt="Library" height={40} src="/favicon.png" width={40} />
-      <span className={'text-2xl cursor-pointer'}>Library</span>
+      <span className={'text-2xl text-foreground cursor-pointer'}>Library</span>
     </NavLink>
   );
 };

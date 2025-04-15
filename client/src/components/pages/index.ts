@@ -6,3 +6,4 @@ export { BookUpdate } from './book-update.page';
 export { BookCreate } from './book-create.page';
 export { AdminCopies } from './admin-copies.page';
 export { UserCopies } from './user-copies.page';
+export { UserPage } from './user.page';
